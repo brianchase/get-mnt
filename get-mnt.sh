@@ -1,8 +1,8 @@
 #!/bin/bash
 
-get_new_a2 () {
+get_new_arrays () {
   chk_arrays
-  unset A1 A2 B1 B2
+  unset DevArr1 DevArr2 MntArr1 MntArr2
   dev_arrays
 }
 
@@ -10,56 +10,57 @@ get_menu () {
   while true; do
     local N=0
     printf '%s\n\n' "Please choose:"
-    for i in "${!A2[@]}"; do
-      printf '\t%s\n' "$((N += 1)). ${A2[$i]} mounted at ${B2[$i]}"
+    for i in "${!DevArr2[@]}"; do
+      printf '\t%s\n' "$((N += 1)). ${DevArr2[$i]} mounted at ${MntArr2[$i]}"
     done
     printf '\t%s\n' "$((N += 1)). Exit"
-    local OP
-    read -r OP
-    case $OP in
+    local Opt
+    read -r Opt
+    case $Opt in
       ''|*[!1-9]*) continue ;;
     esac
-    if [ "$OP" -gt "$N" ]; then
+    if [ "$Opt" -gt "$N" ]; then
       continue
-    elif [ "$OP" = "$N" ]; then
+    elif [ "$Opt" = "$N" ]; then
       return 1
     fi
     break
   done
-  local TempA="${A2[(($OP - 1))]}"
-  local TempB="${B2[(($OP - 1))]}"
-  unset A2 B2
-  A2[0]="$TempA"
-  B2[0]="$TempB"
+  local TempA="${DevArr2[(($Opt - 1))]}"
+  local TempB="${MntArr2[(($Opt - 1))]}"
+  unset DevArr2 MntArr2
+  DevArr2[0]="$TempA"
+  MntArr2[0]="$TempB"
 }
 
 get_chk_arrays () {
   while true; do
-    if [ "${#A2[*]}" -eq 0 ]; then
-      get_new_a2
-      if [ "${#A2[*]}" -eq 1 ]; then
+    if [ "${#DevArr2[*]}" -eq 0 ]; then
+      get_new_arrays
+      if [ "${#DevArr2[*]}" -eq 1 ]; then
         break
-      elif [ "${#A2[*]}" -gt 1 ]; then
+      elif [ "${#DevArr2[*]}" -gt 1 ]; then
         continue
       fi
       printf '%s\n' "No mounted device selected!"
       exit 1
-    elif [ "${#A2[*]}" -eq 1 ]; then
-      if [ "${A2[0]}" != "$TempA" ]; then
-        read -r -p "Use ${A2[0]} mounted at ${B2[0]}? [y/n] " UD
-        if [ "$UD" = y ]; then
+    elif [ "${#DevArr2[*]}" -eq 1 ]; then
+      if [ "${DevArr2[0]}" != "$TempA" ]; then
+        local UseDev
+        read -r -p "Use ${DevArr2[0]} mounted at ${MntArr2[0]}? [y/n] " UseDev
+        if [ "$UseDev" = y ]; then
           break
-        elif [ "$((${#A1[*]} + ${#A2[*]}))" -gt 1 ]; then
-          local TempA="${A2[0]}"
-          get_new_a2
-          if [ "${#A2[*]}" -ge 1 ]; then
+        elif [ "$((${#DevArr1[*]} + ${#DevArr2[*]}))" -gt 1 ]; then
+          local TempA="${DevArr2[0]}"
+          get_new_arrays
+          if [ "${#DevArr2[*]}" -ge 1 ]; then
             continue
           fi
         fi
       fi
       printf '%s\n' "No mounted device selected!"
       exit 1
-    elif [ "${#A2[*]}" -gt 1 ]; then
+    elif [ "${#DevArr2[*]}" -gt 1 ]; then
       get_menu
       break
     fi
