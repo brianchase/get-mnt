@@ -8,13 +8,12 @@ get_new_arrays () {
 
 get_menu () {
   while true; do
-    local N=0
+    local N=0 Opt i
     printf '%s\n\n' "Please choose:"
     for i in "${!DevArr2[@]}"; do
-      printf '\t%s\n' "$((N += 1)). ${DevArr2[$i]} mounted at ${MntArr2[$i]}"
+      printf '\t%s\n' "$((N += 1)). ${DevArr2[i]} mounted at ${MntArr2[i]}"
     done
     printf '\t%s\n' "$((N += 1)). Exit"
-    local Opt
     read -r Opt
     case $Opt in
       ''|*[!1-9]*) continue ;;
