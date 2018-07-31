@@ -72,8 +72,8 @@ get_main () {
     dev_arrays
     get_chk_arrays
   else
-    printf '%s\n' "mnt-dev.sh not found!"
-    printf '%s\n' "Please visit https://github.com/brianchase/mnt-dev" >&2
+    printf '%s\n' "'mnt-dev.sh' not found!" \
+      "Please visit https://github.com/brianchase/mnt-dev" >&2
     exit 1
   fi
 }
