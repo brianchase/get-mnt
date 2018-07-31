@@ -41,7 +41,7 @@ get_chk_arrays () {
       elif [ "${#DevArr2[*]}" -gt 1 ]; then
         continue
       fi
-      printf '%s\n' "No mounted device selected!"
+      printf '%s\n' "No mounted device selected!" >&2
       exit 1
     elif [ "${#DevArr2[*]}" -eq 1 ]; then
       if [ "${DevArr2[0]}" != "$TempA" ]; then
@@ -57,7 +57,7 @@ get_chk_arrays () {
           fi
         fi
       fi
-      printf '%s\n' "No mounted device selected!"
+      printf '%s\n' "No mounted device selected!" >&2
       exit 1
     elif [ "${#DevArr2[*]}" -gt 1 ]; then
       get_menu
@@ -73,7 +73,7 @@ get_main () {
     get_chk_arrays
   else
     printf '%s\n' "mnt-dev.sh not found!"
-    printf '%s\n' "Please visit https://github.com/brianchase/mnt-dev"
+    printf '%s\n' "Please visit https://github.com/brianchase/mnt-dev" >&2
     exit 1
   fi
 }
