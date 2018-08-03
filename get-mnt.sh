@@ -1,9 +1,13 @@
 #!/bin/bash
 
 get_new_arrays () {
-  chk_arrays
-  unset DevArr1 DevArr2 MntArr1 MntArr2
-  dev_arrays
+  if chk_arrays; then
+    unset DevArr1 DevArr2 MntArr1 MntArr2
+    dev_arrays
+  else
+    printf '%s\n' "No mounted device selected!" >&2
+    exit 1
+  fi
 }
 
 get_menu () {
