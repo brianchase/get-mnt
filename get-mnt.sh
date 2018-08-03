@@ -53,7 +53,7 @@ get_chk_arrays () {
         read -r -p "Use ${DevArr2[0]} mounted at ${MntArr2[0]}? [y/n] " UseDev
         if [ "$UseDev" = y ]; then
           break
-        elif [ "$((${#DevArr1[*]} + ${#DevArr2[*]}))" -gt 1 ]; then
+        elif [ "${#DevArr1[*]}" -ge 1 ]; then
           local TempA="${DevArr2[0]}"
           get_new_arrays
           if [ "${#DevArr2[*]}" -ge 1 ]; then
@@ -64,8 +64,11 @@ get_chk_arrays () {
       printf '%s\n' "No mounted device selected!" >&2
       exit 1
     elif [ "${#DevArr2[*]}" -gt 1 ]; then
-      get_menu
-      break
+      if get_menu; then
+        break
+      else
+        get_new_arrays
+      fi
     fi
   done
 }
