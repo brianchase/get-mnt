@@ -1,6 +1,7 @@
 #!/bin/bash
 
 get_new_arrays () {
+# See chk_arrays and dev_arrays in mnt-dev.sh.
   if chk_arrays; then
     unset DevArr1 DevArr2 MntArr1 MntArr2
     dev_arrays
@@ -14,10 +15,11 @@ get_menu () {
   while true; do
     local N=0 Opt i
     printf '%s\n\n' "Please choose:"
+# List all mounted devices for selection.
     for i in "${!DevArr2[@]}"; do
       printf '\t%s\n' "$((N += 1)). ${DevArr2[i]} mounted at ${MntArr2[i]}"
     done
-    printf '\t%s\n' "$((N += 1)). Exit"
+    printf '\t%s\n' "$((N += 1)). Skip"
     read -r Opt
     case $Opt in
       ''|*[!1-9]*) continue ;;
@@ -29,6 +31,7 @@ get_menu () {
     fi
     break
   done
+# Make the selected device DevArr2[0] and its mount point MntArr2[0].
   local TempA="${DevArr2[(($Opt - 1))]}"
   local TempB="${MntArr2[(($Opt - 1))]}"
   unset DevArr2 MntArr2
@@ -39,6 +42,7 @@ get_menu () {
 get_chk_arrays () {
   while true; do
     if [ "${#DevArr2[*]}" -eq 0 ]; then
+# If there's no mounted device, see about mounting one.
       get_new_arrays
       if [ "${#DevArr2[*]}" -eq 1 ]; then
         break
@@ -48,6 +52,10 @@ get_chk_arrays () {
       printf '%s\n' "No mounted device selected!" >&2
       exit 1
     elif [ "${#DevArr2[*]}" -eq 1 ]; then
+
+# If there's just one mounted device (not selected earlier), ask to
+# use it. If you decline, see about mounting another one.
+
       if [ "${DevArr2[0]}" != "$TempA" ]; then
         local UseDev
         read -r -p "Use ${DevArr2[0]} mounted at ${MntArr2[0]}? [y/n] " UseDev
@@ -64,9 +72,11 @@ get_chk_arrays () {
       printf '%s\n' "No mounted device selected!" >&2
       exit 1
     elif [ "${#DevArr2[*]}" -gt 1 ]; then
+# If there's more than one mounted device, build a menu of options.
       if get_menu; then
         break
       else
+# If you chose "skip" in get_menu, see about mounting another device.
         get_new_arrays
       fi
     fi
@@ -74,6 +84,7 @@ get_chk_arrays () {
 }
 
 get_main () {
+# Use dev_arrays in mnt-dev.sh to get DevArr1, DevArr2, MntArr1, and MntArr2.
   if [ -x "$(command -v mnt-dev.sh)" ]; then
     source mnt-dev.sh
     dev_arrays
