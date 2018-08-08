@@ -1,6 +1,6 @@
 # get-mnt
 
-## ABOUT
+## About
 
 This Bash script works with my
 [mnt-dev.sh](https://github.com/brianchase/mnt-dev) to select a
@@ -13,10 +13,10 @@ or to mount one before using it (if one or more are connected).
 
 For a practical example of how to use the script, please see my
 [archive-rsync.sh](https://github.com/brianchase/archive-rsync), which
-uses [rsync](https://rsync.samba.org/) to backup local files to a
+uses [rsync](https://rsync.samba.org/) to back up local files to a
 connected device.
 
-## PORTABILITY
+## Portability
 
 Since the script uses arrays, it's not strictly
 [POSIX](https://en.wikipedia.org/wiki/POSIX)-compliant. As a result,
@@ -24,12 +24,12 @@ it isn't compatible with
 [Dash](http://gondor.apana.org.au/~herbert/dash/) and probably a good
 number of other shells.
 
-## LICENSE
+## License
 
 This project is in the public domain under [The
 Unlicense](https://choosealicense.com/licenses/unlicense/).
 
-## REQUIREMENTS
+## Requirements
 
 * [mnt-dev.sh](https://github.com/brianchase/mnt-dev)
 
