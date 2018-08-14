@@ -24,11 +24,8 @@ get_menu () {
     case $Opt in
       ''|*[!1-9]*) continue ;;
     esac
-    if [ "$Opt" -eq "$N" ]; then
-      return 1
-    elif [ "$Opt" -gt "$N" ]; then
-      continue
-    fi
+    [ "$Opt" -eq "$N" ] && return 1
+    [ "$Opt" -gt "$N" ] && continue
     break
   done
 # Make the selected device DevArr2[0] and its mount point MntArr2[0].
@@ -44,11 +41,8 @@ get_chk_arrays () {
     if [ "${#DevArr2[*]}" -eq 0 ]; then
 # If there's no mounted device, see about mounting one.
       get_new_arrays
-      if [ "${#DevArr2[*]}" -eq 1 ]; then
-        break
-      elif [ "${#DevArr2[*]}" -gt 1 ]; then
-        continue
-      fi
+      [ "${#DevArr2[*]}" -eq 1 ] && break
+      [ "${#DevArr2[*]}" -gt 1 ] && continue
       printf '%s\n' "No mounted device selected!" >&2
       exit 1
     elif [ "${#DevArr2[*]}" -eq 1 ]; then
@@ -59,26 +53,20 @@ get_chk_arrays () {
       if [ "${DevArr2[0]}" != "$TempA" ]; then
         local UseDev
         read -r -p "Use ${DevArr2[0]} mounted at ${MntArr2[0]}? [y/n] " UseDev
-        if [ "$UseDev" = y ]; then
-          break
-        elif [ "${#DevArr1[*]}" -ge 1 ]; then
+        [ "$UseDev" = y ] && break
+        if [ "${#DevArr1[*]}" -ge 1 ]; then
           local TempA="${DevArr2[0]}"
           get_new_arrays
-          if [ "${#DevArr2[*]}" -ge 1 ]; then
-            continue
-          fi
+          [ "${#DevArr2[*]}" -ge 1 ] && continue
         fi
       fi
       printf '%s\n' "No mounted device selected!" >&2
       exit 1
     elif [ "${#DevArr2[*]}" -gt 1 ]; then
 # If there's more than one mounted device, build a menu of options.
-      if get_menu; then
-        break
-      else
+      get_menu && break
 # If you chose "skip" in get_menu, see about mounting another device.
-        get_new_arrays
-      fi
+      get_new_arrays
     fi
   done
 }
