@@ -24,10 +24,10 @@ get_menu () {
     case $Opt in
       ''|*[!1-9]*) continue ;;
     esac
-    if [ "$Opt" -gt "$N" ]; then
-      continue
-    elif [ "$Opt" = "$N" ]; then
+    if [ "$Opt" -eq "$N" ]; then
       return 1
+    elif [ "$Opt" -gt "$N" ]; then
+      continue
     fi
     break
   done
