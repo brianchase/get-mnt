@@ -23,8 +23,8 @@ get_menu () {
     read -r Opt
     case $Opt in
       ''|*[!1-9]*) continue ;;
+      "$N") return 1 ;;
     esac
-    [ "$Opt" -eq "$N" ] && return 1
     [ "$Opt" -gt "$N" ] && continue
     break
   done
