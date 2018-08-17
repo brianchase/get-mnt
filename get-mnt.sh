@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# From: https://github.com/brianchase/get-mnt
+# See also: https://github.com/brianchase/mnt-dev
+
 get_new_arrays () {
 # See chk_arrays and dev_arrays in mnt-dev.sh.
   if chk_arrays; then
