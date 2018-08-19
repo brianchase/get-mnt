@@ -5,13 +5,9 @@
 
 get_new_arrays () {
 # See chk_arrays and dev_arrays in mnt-dev.sh.
-  if chk_arrays; then
-    unset DevArr1 DevArr2 MntArr1 MntArr2
-    dev_arrays
-  else
-    printf '%s\n' "No mounted device selected!" >&2
-    exit 1
-  fi
+  chk_arrays || get_error "No mounted device selected!"
+  unset DevArr1 DevArr2 MntArr1 MntArr2
+  dev_arrays
 }
 
 get_menu () {
@@ -46,8 +42,7 @@ get_chk_arrays () {
       get_new_arrays
       [ "${#DevArr2[*]}" -eq 1 ] && break
       [ "${#DevArr2[*]}" -gt 1 ] && continue
-      printf '%s\n' "No mounted device selected!" >&2
-      exit 1
+      get_error "No mounted device selected!"
     elif [ "${#DevArr2[*]}" -eq 1 ]; then
 
 # If there's just one mounted device (not selected earlier), ask to
@@ -63,8 +58,7 @@ get_chk_arrays () {
           [ "${#DevArr2[*]}" -ge 1 ] && continue
         fi
       fi
-      printf '%s\n' "No mounted device selected!" >&2
-      exit 1
+      get_error "No mounted device selected!"
     elif [ "${#DevArr2[*]}" -gt 1 ]; then
 # If there's more than one mounted device, build a menu of options.
       get_menu && break
@@ -74,17 +68,17 @@ get_chk_arrays () {
   done
 }
 
+get_error () {
+  printf '%s\n' "$1" >&2
+  exit 1
+}
+
 get_main () {
 # Use dev_arrays in mnt-dev.sh to get DevArr1, DevArr2, MntArr1, and MntArr2.
-  if [ -x "$(command -v mnt-dev.sh)" ]; then
-    source mnt-dev.sh
-    dev_arrays
-    get_chk_arrays
-  else
-    printf '%s\n' "'mnt-dev.sh' not found!" \
-      "Please visit https://github.com/brianchase/mnt-dev" >&2
-    exit 1
-  fi
+  [ -x "$(command -v mnt-dev.sh)" ] || get_error "'mnt-dev.sh' not found!"
+  source mnt-dev.sh
+  dev_arrays
+  get_chk_arrays
 }
 
 get_main
