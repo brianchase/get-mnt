@@ -16,11 +16,6 @@ For a practical example of how to use the script, please see my
 uses [rsync](https://rsync.samba.org/) to back up local files to a
 connected device.
 
-## Portability
-
-Since the script uses arrays, it's not strictly
-[POSIX](https://en.wikipedia.org/wiki/POSIX)-compliant.
-
 ## License
 
 This project is in the public domain under [The
