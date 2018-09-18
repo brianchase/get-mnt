@@ -16,7 +16,7 @@ get_menu () {
     printf '%s\n\n' "Please choose:"
 # List all mounted devices for selection.
     for i in "${!DevArr2[@]}"; do
-      printf '\t%s\n' "$((N += 1)). ${DevArr2[i]} mounted at ${MntArr2[i]}"
+      printf '\t%s\n' "$((N += 1)). ${DevArr2[i]} mounted on ${MntArr2[i]}"
     done
     printf '\t%s\n' "$((N += 1)). Skip"
     read -r Opt
@@ -50,7 +50,7 @@ get_chk_arrays () {
 
       if [ "${DevArr2[0]}" != "$TempA" ]; then
         local UseDev
-        read -r -p "Use ${DevArr2[0]} mounted at ${MntArr2[0]}? [y/n] " UseDev
+        read -r -p "Use ${DevArr2[0]} mounted on ${MntArr2[0]}? [y/n] " UseDev
         [ "$UseDev" = y ] && break
         if [ "${#DevArr1[*]}" -ge 1 ]; then
           local TempA="${DevArr2[0]}"
