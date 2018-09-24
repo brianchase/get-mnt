@@ -28,11 +28,8 @@ get_menu () {
     break
   done
 # Make the selected device DevArr2[0] and its mount point MntArr2[0].
-  local TempA="${DevArr2[(($Opt - 1))]}"
-  local TempB="${MntArr2[(($Opt - 1))]}"
-  unset DevArr2 MntArr2
-  DevArr2[0]="$TempA"
-  MntArr2[0]="$TempB"
+  DevArr2=("${DevArr2[@]:(($Opt - 1)):1}")
+  MntArr2=("${MntArr2[@]:(($Opt - 1)):1}")
 }
 
 get_chk_arrays () {
